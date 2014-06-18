@@ -115,7 +115,7 @@ class SampleSnmpDevicePlugin(PythonDataSourcePlugin):
 
         # you can return nothing with the new python collectory...chet for president!
         if not polled_results1:
-            log.debug('no stuffs!!')
+            log.debug('no stuffs!! found on %s' % config.id)
             return data
 
         # format returns looks like: {oid for each row:
@@ -138,7 +138,7 @@ class SampleSnmpDevicePlugin(PythonDataSourcePlugin):
                     'component': aComponentVariable,
                     'mydetail': 'Down'           # can add custom details
                     })
-                log.debug('something is broken on  %s is down' % ike_id)
+                log.debug('something is broken on  device %s, %s is down' % (config.id, ike_id))
                 continue
 
         # one way to send an event if there is no problem with your code
@@ -152,11 +152,11 @@ class SampleSnmpDevicePlugin(PythonDataSourcePlugin):
             })
 
         # if im doing something like checking alot of components, its kinda nice to log results to info something like this
-        log.info('Checked %s things on my device against a current poll' % len(existing_stuffs))
-        log.info('Poll returned %s stuffs that we had to check' % (len(polledResults1)))
+        log.info('Checked %s things on %s against a current poll' % (len(existing_stuffs), config.id))
+        log.info('Poll returned %s stuffs that we had to check on %s' % (len(polledResults1), % config.id))
 
         ev = Counter([ev['eventClassKey'] for ev in data.get('events')])
-        log.info('Stuffs Poll completed, status details:  %s' % ev)
+        log.info('Stuffs Poll completed on %s, status details:  %s' % (ev, config.id))
 
         return data
 
@@ -164,13 +164,32 @@ class SampleSnmpDevicePlugin(PythonDataSourcePlugin):
         """
         Called only on error. After onResult, before onComplete.
         """
-        log.error('time for debuggging, this poller failed:  %s' % result)
-        return {
-            'events': [{
-                'summary': 'Polling failed for my junk',
-                'message': result,
-                'eventClassKey': 'the_key_of_fail',
-                'severity': 4,   # i know, inconsitent, right??
-                'component': 'argg',
-                }],
-            }
+        # empty data structure for results, see zenpython collector docs
+        data = self.new_data()
+        
+        err_msg = result.getErrorMessage()
+        
+        log.error('time for debuggging, this poller failed on %s:  %s' % (err_msg, config.id))
+        
+        data['events'].append({
+             'summary': 'Polling failed for my junk',
+             'message': 'Error polling IKE VPN, debug info is : %s' % err_msg,
+             'eventClassKey': 'the_key_of_fail',
+             'severity': ZenEventClasses.Error,
+             'component': 'argggg',
+             })
+        
+        return data
+        
+            
+    def _close(self):
+        """
+        Close down the connection to the remote device
+        """
+        if self.p:
+            self.p.close()
+        self.p = None
+
+    def cleanup(self):
+        return self._close()
+        
