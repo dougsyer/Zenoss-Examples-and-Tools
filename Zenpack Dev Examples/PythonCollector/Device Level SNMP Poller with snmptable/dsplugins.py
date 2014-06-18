@@ -190,6 +190,6 @@ class SampleSnmpDevicePlugin(PythonDataSourcePlugin):
             self.p.close()
         self.p = None
 
-    def cleanup(self):
+    def cleanup(self, config):
         return self._close()
         
