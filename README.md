@@ -37,4 +37,9 @@ checkEventMisconfig.py
     Checks some things that **could indicate issues with your transforms/mappings.  For sure not everyting
     printed is an issue but when you have alot of transforms mappings I find it useful to periodically check this.
     
+    just run the tool as the zenoss user
+    
+MaintWindowCleaner.py
 
+    removes maintenance windows from dmd that where scheduled but will never run again.  
+    just run the tool as the zenoss user..
