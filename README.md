@@ -31,3 +31,10 @@ evexporter.py -> export events cleanly into csv format:
         exports to screen but uses unix time stamps instead of iso time format(more precision)
     6.  evexporter --archive --csv --first_time 2014-04-15:12:00:00
         export events from archive where first seen is from date/time specified to now
+        
+checkEventMisconfig.py
+
+    Checks some things that **could indicate issues with your transforms/mappings.  For sure not everyting
+    printed is an issue but when you have alot of transforms mappings I find it useful to periodically check this.
+    
+
