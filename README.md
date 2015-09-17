@@ -37,9 +37,26 @@ checkEventMisconfig.py
     Checks some things that **could indicate issues with your transforms/mappings.  For sure not everyting
     printed is an issue but when you have alot of transforms mappings I find it useful to periodically check this.
     
-    just run the tool as the zenoss user
+    usage:  ./checkEventMisconfig.py
     
 MaintWindowCleaner.py
 
     removes maintenance windows from dmd that where scheduled but will never run again.  
     just run the tool as the zenoss user..
+
+    usage:  as zenoss user:  ./MaintWindowCleaner.py
+
+OldJobsCleaner.py
+
+    removes old jobs that have finished in zenoss, its currently hard codes to delete jobs > 95 days old
+
+    usage:  as zenoss user:  ./OldJobsCleaner.py
+
+getDevModelOverride.py
+
+    dependency:  uses prettytable.py, can easily be changed to just use pprint
+                 can be found at https://code.google.com/p/prettytable/
+
+    prints a list of devices that have locally overriden modeler plugins
+
+    usage:  as zenoss user: ./getDeveModelOverride.py
