@@ -444,20 +444,20 @@ class simple_script_runner(ZenScriptBase):
             self.options.first_time_filter,),
             archive = self.options.get_archived_events)
 
-       zep_status_gen = zep.getEventSummariesGenerator(self.get_me_filter_maytee(
+        zep_status_gen = zep.getEventSummariesGenerator(self.get_me_filter_maytee(
             zep,
             self.options.device_filter,
             map(int, self.options.severity_filter.split(',')),
             self.options.first_time_filter,))
 
-       zep_gen = chain(zep_archive_gen, zep_status_gen)
+        #zep_gen = chain(zep_archive_gen, zep_status_gen)
+        zep_gen = zep_status_gen
 
         no_export_fields = ('element_type_id',
                             'element_sub_type_id',
                             'element_sub_uuid',
                             'element_uuid',
                             'event_class_mapping_uuid')
-
 
         print "Starting Event Export"
 
